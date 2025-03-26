@@ -1,16 +1,16 @@
 def coinChange(coins, amount):
-    coins.sort(reverse=True)  # Sort coins in descending order
-    count = 0
-    
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0  
+
     for coin in coins:
-        if amount == 0:
-            break
-        count += amount // coin  # Take maximum possible coins of this denomination
-        amount %= coin  # Update remaining amount
+        for i in range(coin, amount + 1):
+            dp[i] = min(dp[i], dp[i - coin] + 1)
 
-    return count if amount == 0 else -1  # If amount is 0, return count; otherwise, return -1
+    return -1 if dp[amount] == float('inf') else dp[amount]
 
+# Taking user input
+coins = list(map(int, input("Enter coin : ").split()))
+amount = int(input("Enter the amount: "))
 
-coins = [1, 2, 5]
-amount = 11
-print(coinChange(coins, amount)) 
+# Printing the result
+print("coins needed:", coinChange(coins, amount))
